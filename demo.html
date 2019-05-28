@@ -10,6 +10,7 @@
 			padding:0px;
 			margin:0px;
 			list-style: none;
+			text-decoration: none;
 		}
 		input{
 			width:400px;
@@ -26,6 +27,19 @@
 			width:400px;
 			margin:100px auto;
 		}
+		a{
+			color:#111;
+			font-size: 14px;
+
+		}
+		li{
+			height: 25px;
+            line-height: 25px;
+		}
+		li:hover{
+			background-color: rgba(0,0,0,0.1);
+		}
+
 	</style>
 </head>
 <body>
@@ -34,17 +48,23 @@
 		 <ul>
 		 	 
 		 </ul>
-
+ 	 
 	</div>
 	
 	 <script>
 	 	var oInput=document.getElementsByTagName("input")[0],
 	 	     oUl=document.getElementsByTagName("ul")[0];
 	 	oInput.oninput=function(){
+
 	 			var value=this.value;
 	 			var oScript=document.createElement('script');
 	 			oScript.src="http://suggestion.baidu.com/su?ie=utf-action=json&wd="+value+"&cb=aa";
 	 			document.body.appendChild(oScript);
+	 			oScript.onload=function(){
+	 		     	document.body.removeChild(oScript);//script加载完后再删除
+
+	 			}
+
 
 	 	}
 
@@ -52,10 +72,17 @@
 	 	 	// console.log(data)
 	 	 	var s=data.s,
 	 	 	str='';
+
 	 	 	if(s.length>0){
-	 	 		s.forEach(function(ele,index){
-	 	 		str+='<li>'+ele+'</li>';
-	 	 	})
+
+	 	 		for(var i=0;i<s.length;i++){
+	 	 			str+='<li><a href="http://www.baidu.com/s?wd='+s[i]+'">'+s[i]+'</a></li>';
+	 	 			if(i==6){
+	 	 				 
+	 	 				break;
+	 	 			}
+	 	 		}
+	 	 		 
 	 	 	oUl.innerHTML=str;
 	 	 	oUl.style.display='block';
 	 	 	}else{
